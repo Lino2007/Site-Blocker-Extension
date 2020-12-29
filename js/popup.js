@@ -7,7 +7,8 @@ function resetBlacklist() {
     browser.storage.local.set({
         blacklist: initial_data
     }, function() {
-        blacklist = initial_data;
+        blacklist = $.extend(true, [], initial_data);
+        reloadTable();
     });
 }
 
@@ -20,7 +21,7 @@ function iterateAndCloseTabs(currentTab) {
      let delFlag = false;
      for (let i = blacklist.length - 1; i>=0; i--){
         for (let j = tabs.length - 1; j>=0; j--) {
-            if (blacklist[i] == tabs[j].url)  {
+            if (blacklist[i] == trURL(tabs[j].url))  {
                 browser.tabs.remove(tabs[j].id);
                 tabs.splice(j,1);
                 delFlag = true;
@@ -39,8 +40,10 @@ function addUrl () {
     let url = document.getElementById("bInput").value;
     if (url.includes("chrome://")) return ;
     if (url!=null && url.length!=0) {
-        if (validateUrl(url)) {
-            url = trURL(url);
+        url = trURL(url);
+        if (validateUrl(url) && blacklist.indexOf(url) == -1) {
+           
+            console.log(url);
             blacklist.push(url);
             browser.storage.local.set({ blacklist: blacklist });
             iterateAndCloseTabs(null);
@@ -59,7 +62,7 @@ function add() {
 
         if (blacklist.indexOf(tabs[0].url)== -1) {
             console.log(tabs[0]);
-            blacklist.push(tabs[0].url);
+            blacklist.push(trURL(tabs[0].url));
             browser.storage.local.set({ blacklist: blacklist }, function() {
             iterateAndCloseTabs(tabs[0]);
             browser.tabs.remove(tabs[0].id);
@@ -67,6 +70,10 @@ function add() {
             });
         }
       }); 
+}
+function reloadTable () {
+    $("#blTable").find("tr:gt(0)").empty();
+    loadTable();
 }
 
 function handleDelete () {
