@@ -3,8 +3,16 @@
   <head>
     <title>Test</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../js/tab.js"></script>
    </head>
   <body>
+    <div id="tabs">  <ul>
+      <li><a href="#tabs-1">Tab 1</a></li>
+      <li><a href="#tabs-2">Tab 2</a></li>
+    </ul>
+    <div id="tabs-1">
     <h1>This is site blocker extension page</h1>
     <div id="buttonSection">
     <button id="di">Blacklist current page</button>
@@ -15,6 +23,17 @@
      <input type="text" id="bInput" placeholder="Blacklist site by typing URL..."> 
      <button type="submit" id="bButton">+</button>
     </div>
+    </div> 
+  <div id="tabs-2"><label>Table</label>
+    <div style="height:100px;overflow:auto;">
+      <table style="width:100%" id="blTable">
+        <tr>
+          <th>URL</th>
+        </tr>
+      </table>
+     </div>
+   </div>
+</div>
   </body>
   <script src="../js/popup.js"></script>
   <script src="../js/url_handler.js"></script>

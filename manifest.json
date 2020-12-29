@@ -12,6 +12,7 @@
 
     "background": {
       "scripts": ["js/background.js"]
-    }
+    },
+    "content_security_policy": "script-src 'self' https://code.jquery.com; object-src 'self'"
     
 }

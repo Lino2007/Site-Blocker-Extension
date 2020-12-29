@@ -44,6 +44,7 @@ function addUrl () {
             blacklist.push(url);
             browser.storage.local.set({ blacklist: blacklist });
             iterateAndCloseTabs(null);
+            loadTable();
         }
         else {
             console.log("Bad url..");
@@ -62,11 +63,33 @@ function add() {
             browser.storage.local.set({ blacklist: blacklist }, function() {
             iterateAndCloseTabs(tabs[0]);
             browser.tabs.remove(tabs[0].id);
+            loadTable();
             });
         }
       }); 
 }
 
+function handleDelete () {
+    console.log(this.id);
+    blacklist.splice(this.id, 1);
+    browser.storage.local.set({
+        blacklist: blacklist
+    }, function() {
+       $("#blTable").find("tr:gt(0)").empty();
+       loadTable();
+    });
+}
+
+function loadTable () {
+    let table = document.getElementById("blTable"), i = 0;
+    blacklist.forEach(item =>{
+         tr = table.insertRow(-1);
+         tr.addEventListener("dblclick", handleDelete);
+         tr.id = i++;
+         cell = tr.insertCell(-1);
+         cell.innerHTML = item;
+    });
+}
 
 
 window.onload = function() {
@@ -77,5 +100,6 @@ window.onload = function() {
     
     browser.storage.local.get(data => {
         if (data.blacklist)   blacklist = data.blacklist;
+        loadTable();
     });
 }
