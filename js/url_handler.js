@@ -12,5 +12,6 @@ function trURL (input) {
     return regexp.test(value);
 } 
 
+
  
  
