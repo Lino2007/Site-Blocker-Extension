@@ -3,35 +3,36 @@
   <head>
     <title>Test</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="../js/tab.js"></script>
    </head>
   <body>
+    <h1 id ="title">Site blocker</h1>
     <div id="tabs">  <ul>
-      <li><a href="#tabs-1">Tab 1</a></li>
-      <li><a href="#tabs-2">Tab 2</a></li>
+      <li><a href="#tabs-1">Blacklisting</a></li>
+      <li><a href="#tabs-2">Blacklist management</a></li>
     </ul>
     <div id="tabs-1">
-    <h1>This is site blocker extension page</h1>
+      <label class="instruction" style="margin-bottom: 2%; ">To blacklist site in current tab click: </label>
     <div id="buttonSection">
     <button id="di">Blacklist current page</button>
-    &nbsp; &nbsp; &nbsp; &nbsp;
-    <button id="refresh">Reset to default</button>
     </div>
+    <hr>
+    <label class="instruction">Or blacklist site by typing URL: </label>
     <div id="insert">
-     <input type="text" id="bInput" placeholder="Blacklist site by typing URL..."> 
+     <input type="text" id="bInput" placeholder="Type URL"> 
      <button type="submit" id="bButton">+</button>
-    </div>
+   </div>
+    <button id="refresh" style="margin-top: 10px;">Reset blacklist</button>
     </div> 
-  <div id="tabs-2"><label>Table</label>
-    <div style="height:100px;overflow:auto;">
-      <table style="width:100%" id="blTable">
-        <tr>
-          <th>URL</th>
-        </tr>
+  <div id="tabs-2"><label id="lb1">List of blacklisted URLs</label>
+    <div  id="tableDiv">
+      <table id="blTable">
       </table>
      </div>
+     <label id="lb2">Double click to remove URL from the blacklist.</label>
    </div>
 </div>
   </body>

@@ -13,10 +13,9 @@ function resetBlacklist() {
 }
 
 
-
+//todo: reimplement this function (r: inefficient and cf-ed)
 function iterateAndCloseTabs(currentTab) {
-
-    browser.tabs.query({}, function(tabs) { 
+   browser.tabs.query({}, function(tabs) { 
      if (currentTab!= null) tabs.splice(tabs.indexOf(currentTab), 1);
      let delFlag = false;
      for (let i = blacklist.length - 1; i>=0; i--){
@@ -72,7 +71,7 @@ function add() {
       }); 
 }
 function reloadTable () {
-    $("#blTable").find("tr:gt(0)").empty();
+    $("#blTable").empty();
     loadTable();
 }
 
@@ -82,8 +81,7 @@ function handleDelete () {
     browser.storage.local.set({
         blacklist: blacklist
     }, function() {
-       $("#blTable").find("tr:gt(0)").empty();
-       loadTable();
+        reloadTable ();
     });
 }
 
@@ -100,11 +98,10 @@ function loadTable () {
 
 
 window.onload = function() {
-  //  alert("there");
     document.getElementById("di").addEventListener("click", add);
     document.getElementById("refresh").addEventListener("click", resetBlacklist);
     document.getElementById("bButton").addEventListener("click", addUrl);
-    
+
     browser.storage.local.get(data => {
         if (data.blacklist)   blacklist = data.blacklist;
         loadTable();
