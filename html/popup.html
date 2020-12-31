@@ -4,6 +4,7 @@
     <title>Test</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="../js/tab.js"></script>
@@ -15,26 +16,39 @@
       <li><a href="#tabs-2">Blacklist management</a></li>
     </ul>
     <div id="tabs-1">
-      <label class="instruction" style="margin-bottom: 2%; ">To blacklist site in current tab click: </label>
+      <div  class="iWrapper">
+      <label class="instruction">To blacklist site in current tab click: </label>
+    </div>
     <div id="buttonSection">
     <button id="di">Blacklist current page</button>
     </div>
     <hr>
+    <div class="iWrapper">
     <label class="instruction">Or blacklist site by typing URL: </label>
+  </div>
     <div id="insert">
      <input type="text" id="bInput" placeholder="Type URL"> 
      <button type="submit" id="bButton">+</button>
    </div>
-    <button id="refresh" style="margin-top: 10px;">Reset blacklist</button>
     </div> 
-  <div id="tabs-2"><label id="lb1">List of blacklisted URLs</label>
+  <div id="tabs-2">
+    <div id="upperSection">
+     <label id="lb1">List of blacklisted URLs</label>
+     <button id="import"><i class="fa fa-download" aria-hidden="true"></i></button>
+     &nbsp;
+     <button id="export"><i class="fa fa-upload" aria-hidden="true"></i></button>
+  </div> 
     <div  id="tableDiv">
       <table id="blTable">
       </table>
      </div>
+     <div id="bottomSection">
      <label id="lb2">Double click to remove URL from the blacklist.</label>
+     <button id="refresh" style="margin-top: 10px;">Reset blacklist</button>
+    </div>
    </div>
 </div>
+   <label id="statusLabel"><i class="fa fa-check-circle" aria-hidden="true" style="color: greenyellow;"></i> Status: OK</label>
   </body>
   <script src="../js/url_handler.js"></script>
   <script src="../js/popup.js"></script>

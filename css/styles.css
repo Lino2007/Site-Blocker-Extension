@@ -1,27 +1,51 @@
 #buttonSection {
     display: inline-block;
-   /*padding: 10px; */ 
-   height: 30px;
+    height: 30px;
     width: 250px;
     margin-top: 1%;
+   
 }
 
-body {
-  background-image: linear-gradient(360deg, rgba(89,89,92,1) 35%, rgba(182,185,186,1) 100%);
+#statusLabel {
+  color: whitesmoke;
 }
+
+#import #export {
+  align-content: left;
+}
+
+#upperSection
+ {
+   display: flex;
+   justify-content: flex-end;
+   align-items: center;
+}
+
+
+body {
+  background-image: linear-gradient(360deg, rgb(73, 73, 73) 35%, rgb(204, 206, 207) 100%);
+}
+
 #tabs-2 {
     width: 250px;
 }
-.instruction {
-  margin-top: 1%;
-}
+
 #insert {
   margin-top: 1%;
 }
-#lb1 {
+
+/* Labels and title */
+#upperSection #lb1 {
   font-size: 15px;
   margin-bottom: 6px; 
   font-weight:bold ;
+  margin-right: auto;
+}
+
+
+#refresh {
+  margin-left: 27%;
+  margin-top: -10pt;
 }
 
 #lb2 {
@@ -33,6 +57,17 @@ body {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
+.instruction {
+  margin-top: 5%;
+}
+
+.iWrapper {
+  margin-top: 5%;
+  margin-bottom: 2%;
+  align-items: center;
+}
+
+/* Table */
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -41,9 +76,9 @@ table {
 
 #tableDiv {
   border: 1px solid gray; 
-  height:100px;
+  height:80px;
   overflow:auto;
- margin-bottom: 1%;
+  margin-bottom: 1%;
   margin-top: 1%; 
 }
   
@@ -56,3 +91,5 @@ table {
   tr:nth-child(even) {
     background-color: #dddddd;
   }
+
+  
