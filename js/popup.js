@@ -37,31 +37,39 @@ function iterateAndCloseTabs(currentTab) {
 
 function addUrl () {
     let url = document.getElementById("bInput").value;
-    if (url.includes("chrome://")) return ;
+    if (url.includes("chrome://")) {
+        displayError(0); return;
+    } 
     if (url!=null && url.length!=0) {
         url = trURL(url);
         if (validateUrl(url) && blacklist.indexOf(url) == -1) {
-           
             console.log(url);
+            displayStatus(0);
             blacklist.push(url);
             browser.storage.local.set({ blacklist: blacklist });
             iterateAndCloseTabs(null);
             loadTable();
         }
         else {
-            console.log("Bad url..");
+            displayError(2);
         }
+    }
+    else {
+        displayError(2);
     }
 }
 
 function add() {
   browser.tabs.query({ currentWindow: true, active: true }, function (tabs) {
         console.log("Blacklist size - add(): "+ blacklist.length);
-        if ((tabs[0].url).includes("chrome://")) return ;
+        if ((tabs[0].url).includes("chrome://")) {
+            displayError(1); return;
+        }
 
         if (blacklist.indexOf(tabs[0].url)== -1) {
             console.log(tabs[0]);
             blacklist.push(trURL(tabs[0].url));
+            displayStatus(0);
             browser.storage.local.set({ blacklist: blacklist }, function() {
             iterateAndCloseTabs(tabs[0]);
             browser.tabs.remove(tabs[0].id);
@@ -76,12 +84,13 @@ function reloadTable () {
 }
 
 function handleDelete () {
-    console.log(this.id);
+    //console.log(this.id);
     blacklist.splice(this.id, 1);
     browser.storage.local.set({
         blacklist: blacklist
     }, function() {
         reloadTable ();
+        displayStatus(1);
     });
 }
 
@@ -101,7 +110,7 @@ window.onload = function() {
     document.getElementById("di").addEventListener("click", add);
     document.getElementById("refresh").addEventListener("click", resetBlacklist);
     document.getElementById("bButton").addEventListener("click", addUrl);
-
+    document.getElementById("bInput").style.backgroundColor = "white";
     browser.storage.local.get(data => {
         if (data.blacklist)   blacklist = data.blacklist;
         loadTable();

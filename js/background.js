@@ -33,7 +33,6 @@ function tabHandler(tabId, status, tabContent) {
 }
 
 browser.runtime.onInstalled.addListener(d => {
-    console.log("onInstalled");
     browser.storage.local.set({
         blacklist: initial_data
     });

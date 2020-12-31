@@ -21,6 +21,9 @@
    align-items: center;
 }
 
+#bInput {
+  background-color: white;
+} 
 
 body {
   background-image: linear-gradient(360deg, rgb(73, 73, 73) 35%, rgb(204, 206, 207) 100%);
