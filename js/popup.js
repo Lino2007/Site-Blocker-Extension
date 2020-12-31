@@ -4,12 +4,29 @@ var blacklist = [];
 
 
 function resetBlacklist() {
+    let resetChoice = confirm ("Are you sure you want to reset blacklist?");
+    if (!resetChoice) {
+        displayStatus(2);
+        return ;
+    }
     browser.storage.local.set({
         blacklist: initial_data
     }, function() {
         blacklist = $.extend(true, [], initial_data);
         reloadTable();
+        displayStatus(3);
     });
+}
+
+function downloadBlacklist () {
+    let element = document.createElement('a');
+    const blacklistJSON = JSON.stringify(blacklist);
+    element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(blacklistJSON));
+    element.setAttribute('download', 'blacklist-' + Date.now() + ".json");
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
 }
 
 
@@ -111,6 +128,7 @@ window.onload = function() {
     document.getElementById("refresh").addEventListener("click", resetBlacklist);
     document.getElementById("bButton").addEventListener("click", addUrl);
     document.getElementById("bInput").style.backgroundColor = "white";
+    document.getElementById("export").addEventListener("click", downloadBlacklist);
     browser.storage.local.get(data => {
         if (data.blacklist)   blacklist = data.blacklist;
         loadTable();

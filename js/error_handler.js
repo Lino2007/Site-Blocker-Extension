@@ -1,5 +1,5 @@
 const errResponse = [" Chrome/Firefox URLs cannot be blacklisted!", " Incorrect URL or already exists in blacklist!"];
-const statusResponse = [" URL successfully blacklisted!", " URL successfully removed from the blacklist!"];
+const statusResponse = [" URL successfully blacklisted!", " URL successfully removed from the blacklist!", " Resetting aborted!", " Blacklist successfully resetted!"];
 var colors = ["red", "orange", "green"];
 var error = false;
 
@@ -61,6 +61,10 @@ function displayStatus (statusCode) {
             document.getElementById("statusLabel").innerHTML = statusResponse[1];
             break;
         case 2:
+            document.getElementById("statusLabel").innerHTML = statusResponse[2];
+            break;
+        case 3:
+            document.getElementById("statusLabel").innerHTML = statusResponse[3];
             break;
     }
 }
