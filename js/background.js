@@ -2,7 +2,7 @@ var browser = browser || chrome;
 browser.tabs.onActivated.addListener(tabHandler);
 browser.tabs.onUpdated.addListener(tabHandler);
 var blacklist = [];
-var initial_data = ["http://example.com/", "https://www.salesforce.com/", "https://theuselessweb.com/", "https://www.imf-formacion.com/", "http://192.168.0.2/"];
+var initial_data = ["http://example.com/", "https://www.salesforce.com/", "https://theuselessweb.com/", "https://www.imf-formacion.com/"];
 
 function trURL (input) {
     let pos = input.indexOf("//");

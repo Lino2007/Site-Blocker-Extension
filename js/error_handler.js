@@ -1,4 +1,4 @@
-const errResponse = [" Chrome/Firefox URLs cannot be blacklisted!", " Incorrect URL or already exists in blacklist!"];
+const errResponse = [" Chrome/Firefox URLs cannot be blacklisted!", " Incorrect URL or already exists in blacklist!", " Failed to load file due to incorrect format!", " Failed to load file due to incorrect URL formats!"];
 const statusResponse = [" URL successfully blacklisted!", " URL successfully removed from the blacklist!", " Resetting aborted!", " Blacklist successfully resetted!"];
 var colors = ["red", "orange", "green"];
 var error = false;
@@ -43,6 +43,15 @@ function displayError (errorCode) {
            }
            document.getElementById("statusLabel").innerHTML = errResponse[1];
            break;
+       case 3:
+           if (!error) switchIcon ();
+           document.getElementById("statusLabel").innerHTML = errResponse[2];
+           break;
+        case 4:
+            if (!error) switchIcon ();
+            document.getElementById("statusLabel").innerHTML = errResponse[3];
+            break;
+         
        default:
            return;
    }

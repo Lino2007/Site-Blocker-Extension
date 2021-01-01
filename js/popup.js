@@ -1,5 +1,5 @@
 var browser = browser || chrome;
-var initial_data = ["http://example.com/", "https://www.salesforce.com/", "https://theuselessweb.com/", "https://www.imf-formacion.com/", "http://192.168.0.2/" ];
+var initial_data = ["http://example.com/", "https://www.salesforce.com/", "https://theuselessweb.com/", "https://www.imf-formacion.com/"];
 var blacklist = [];
 
 
@@ -29,6 +29,48 @@ function downloadBlacklist () {
     document.body.removeChild(element);
 }
 
+function uploadBlacklist () {
+   document.getElementById("file-import").click();
+}
+
+function verifySiteArray(arr) {
+    let temp = [];
+    arr.forEach(url => {
+        console.log(url);
+        console.log(validateUrl(url));
+        if (validateUrl(url)) temp.push(trURL(url));
+        else {
+          throw "..";
+        }
+    });
+    blacklist = $.extend(true, [], temp);
+    iterateAndCloseTabs(null);
+}
+
+function handleFile () {
+   if (this.files.length != 0) {
+       var reader = new FileReader();
+       reader.onload = function(e) {
+           try {
+            jsArr =  JSON.parse(this.result);
+            verifySiteArray(jsArr);
+            console.log(blacklist.length);
+            loadLocalStorage();
+           }
+           catch (e) {
+               console.log(e.toString());
+               if (e.toString() == "..") {
+                   displayError(4);
+                   return ;
+               }
+               displayError(3);
+           }
+         
+       }
+       reader.readAsText(this.files[0]);
+      // console.log(reader.result);
+   }
+}
 
 //todo: reimplement this function (r: inefficient and cf-ed)
 function iterateAndCloseTabs(currentTab) {
@@ -65,7 +107,7 @@ function addUrl () {
             blacklist.push(url);
             browser.storage.local.set({ blacklist: blacklist });
             iterateAndCloseTabs(null);
-            loadTable();
+            reloadTable();
         }
         else {
             displayError(2);
@@ -120,7 +162,15 @@ function loadTable () {
          cell = tr.insertCell(-1);
          cell.innerHTML = item;
     });
+    
 }
+
+function loadLocalStorage () {
+    browser.storage.local.set({ blacklist: blacklist }, function() {
+       
+        reloadTable();
+        });
+    }
 
 
 window.onload = function() {
@@ -129,6 +179,8 @@ window.onload = function() {
     document.getElementById("bButton").addEventListener("click", addUrl);
     document.getElementById("bInput").style.backgroundColor = "white";
     document.getElementById("export").addEventListener("click", downloadBlacklist);
+    document.getElementById("import").addEventListener("click", uploadBlacklist);
+    document.getElementById("file-import").addEventListener("change", handleFile);
     browser.storage.local.get(data => {
         if (data.blacklist)   blacklist = data.blacklist;
         loadTable();
