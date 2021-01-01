@@ -3,16 +3,6 @@ const statusResponse = [" URL successfully blacklisted!", " URL successfully rem
 var colors = ["red", "orange", "green"];
 var error = false;
 
-function inputColorSwitch () {
-    let input = document.getElementById("bInput");
-    let flag = input.style.backgroundColor === "white";
-    if (flag) {
-        input.style.backgroundColor = "#de6868";
-        return ;
-    } 
-    input.style.backgroundColor = "white";
-}
-
 function switchIcon () {
     let icon = document.getElementById("statusIcon");
     let color = icon.style.color;
@@ -28,19 +18,20 @@ function switchIcon () {
 }
 
 function displayError (errorCode) {
- 
+   let input = document.getElementById("bInput");
+   console.log(input.style.backgroundColor);
+   console.log(errorCode);
    switch(errorCode) {
        case 0:
-            inputColorSwitch();
+            console.log(input.style);
+            input.style.backgroundColor = "#de6868";
        case 1:
            if (!error) switchIcon ();
            document.getElementById("statusLabel").innerHTML = errResponse[0];
            break;
        case 2:
-           if (!error) {
-           switchIcon();
-           inputColorSwitch();
-           }
+           if (!error) switchIcon();
+           input.style.backgroundColor = "#de6868";
            document.getElementById("statusLabel").innerHTML = errResponse[1];
            break;
        case 3:
@@ -58,9 +49,10 @@ function displayError (errorCode) {
 }
 
 function displayStatus (statusCode) {
+    let input = document.getElementById("bInput");
     if (error){
         switchIcon();
-        inputColorSwitch();
+        input.style.backgroundColor = "white";
     } 
     switch (statusCode) {
         case 0:

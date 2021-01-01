@@ -15,6 +15,27 @@ function trURL (input) {
     return regexp.test(value);
 } 
 
+function browserURL (infoURL) {
+    if (infoURL.url.includes("chrome://")) {
+        displayError(infoURL.errorCode);
+        return true;
+    } 
+    return false;
+}
+
+function verifySiteArray(arr) {
+    let temp = [];
+    arr.forEach(url => {
+        console.log(url);
+        console.log(validateUrl(url));
+        if (validateUrl(url)) temp.push(trURL(url));
+        else {
+          throw "..";
+        }
+    });
+    blacklist = $.extend(true, [], temp);
+    iterateAndCloseTabs(null);
+}
 
  
  

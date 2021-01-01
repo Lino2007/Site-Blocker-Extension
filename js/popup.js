@@ -33,21 +33,6 @@ function uploadBlacklist () {
    document.getElementById("file-import").click();
 }
 
-// move to url_handler
-function verifySiteArray(arr) {
-    let temp = [];
-    arr.forEach(url => {
-        console.log(url);
-        console.log(validateUrl(url));
-        if (validateUrl(url)) temp.push(trURL(url));
-        else {
-          throw "..";
-        }
-    });
-    blacklist = $.extend(true, [], temp);
-    iterateAndCloseTabs(null);
-}
-
 function handleFile () {
    if (this.files.length != 0) {
        var reader = new FileReader();
@@ -59,7 +44,7 @@ function handleFile () {
            }
            catch (e) {
                console.log(e.toString());
-               if (e.toString() == "..") {
+               if (e.toString() === "..") {
                    displayError(4);
                    return ;
                }
@@ -68,7 +53,6 @@ function handleFile () {
          
        }
        reader.readAsText(this.files[0]);
-      // console.log(reader.result);
    }
 }
 
@@ -103,49 +87,37 @@ function closeTabs (url) {
     });
 
 }
-
-// refactor -> redundant
-function addUrl () {
-    let url = document.getElementById("bInput").value;
-    if (url.includes("chrome://")) {
-        displayError(0); return;
-    } 
-    if (url!=null && url.length!=0) {
-        url = trURL(url);
-        if (validateUrl(url) && blacklist.indexOf(url) == -1) {
-            console.log(url);
-            displayStatus(0);
-            blacklist.push(url);
-            browser.storage.local.set({ blacklist: blacklist });
-            // iterateAndCloseTabs(null);
-            closeTabs(url);
-            reloadTable();
-        }
-        else {
-            displayError(2);
-        }
-    }
-    else {
-        displayError(2);
-    }
+function updateBlacklistAndTabs (url) {
+    displayStatus(0);
+    blacklist.push(url);
+    browser.storage.local.set({ blacklist: blacklist }, function(){
+        closeTabs(url);
+    });
 }
 
 // refactor -> redundant
-function add() {
-  browser.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-        console.log("Blacklist size - add(): "+ blacklist.length);
-        if ((tabs[0].url).includes("chrome://")) {
-            displayError(1); return;
-        }
+function blacklistInputURL () {
+    let url = document.getElementById("bInput").value;
 
+    if (browserURL({url: url, errorCode: 2})) return ;
+    if (url!=null && url.length!=0) {
+        url = trURL(url);
+        if (validateUrl(url) && blacklist.indexOf(url) == -1) {
+            updateBlacklistAndTabs(url);
+            reloadTable(); 
+        }
+        else  displayError(2);
+    }
+    else displayError(2);
+}
+
+// refactor -> redundant
+function blacklistCurrentURL() {
+  browser.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+        if (browserURL({url: tabs[0].url, errorCode: 1})) return ;
         if (blacklist.indexOf(tabs[0].url)== -1) {
             var url = trURL(tabs[0].url);
-            blacklist.push(url);
-            displayStatus(0);
-            browser.storage.local.set({ blacklist: blacklist }, function() {
-            closeTabs(url);
-            loadTable();
-            });
+            updateBlacklistAndTabs(url);
         }
       }); 
 }
@@ -186,9 +158,9 @@ function loadLocalStorage () {
 
 
 window.onload = function() {
-    document.getElementById("di").addEventListener("click", add);
+    document.getElementById("di").addEventListener("click", blacklistCurrentURL);
     document.getElementById("refresh").addEventListener("click", resetBlacklist);
-    document.getElementById("bButton").addEventListener("click", addUrl);
+    document.getElementById("bButton").addEventListener("click", blacklistInputURL);
     document.getElementById("bInput").style.backgroundColor = "white";
     document.getElementById("export").addEventListener("click", downloadBlacklist);
     document.getElementById("import").addEventListener("click", uploadBlacklist);
