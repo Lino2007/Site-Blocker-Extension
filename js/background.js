@@ -4,7 +4,8 @@ browser.tabs.onUpdated.addListener(tabHandler);
 var blacklist = [];
 var initial_data = ["http://example.com/", "https://www.salesforce.com/", "https://theuselessweb.com/", "https://www.imf-formacion.com/"];
 
-function trURL (input) {
+function trimURL (input) {
+    //copied metod from url_handler 
     let pos = input.indexOf("//");
     if (pos== -1) return null;
     pos = input.indexOf ("/", pos+2);
@@ -17,10 +18,8 @@ function tabHandler(tabId, status, tabContent) {
     if (tabContent == undefined) return;
     browser.storage.local.get(data => {
         if (data.blacklist)  blacklist = data.blacklist;
-        console.log("Blacklist size - tabHandler(): " + blacklist.length);
-        console.log(blacklist);
         blacklist.forEach(url => {
-            if (trURL(tabContent.url) == url) {
+            if (trimURL(tabContent.url) == url) {
                 try {
                     browser.tabs.remove(tabId);
                 }

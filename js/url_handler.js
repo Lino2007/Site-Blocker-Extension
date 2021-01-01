@@ -1,4 +1,4 @@
-function trURL (input) {
+function trimURL (input) {
     let pos = input.indexOf("//");
     if (pos== -1) return null;
     pos = input.indexOf ("/", pos+2);
@@ -23,18 +23,17 @@ function browserURL (infoURL) {
     return false;
 }
 
-function verifySiteArray(arr) {
+function verifyUrlArray(arr) {
     let temp = [];
     arr.forEach(url => {
         console.log(url);
         console.log(validateUrl(url));
-        if (validateUrl(url)) temp.push(trURL(url));
+        if (validateUrl(url)) temp.push(trimURL(url));
         else {
           throw "..";
         }
     });
     blacklist = $.extend(true, [], temp);
-    iterateAndCloseTabs(null);
 }
 
  

@@ -1,6 +1,5 @@
 const errResponse = [" Chrome/Firefox URLs cannot be blacklisted!", " Incorrect URL or already exists in blacklist!", " Failed to load file due to incorrect format!", " Failed to load file due to incorrect URL formats!"];
-const statusResponse = [" URL successfully blacklisted!", " URL successfully removed from the blacklist!", " Resetting aborted!", " Blacklist successfully resetted!"];
-var colors = ["red", "orange", "green"];
+const statusResponse = [" URL successfully blacklisted!", " URL successfully removed from the blacklist!", " Resetting aborted!", " Blacklist successfully resetted!", " File successfully imported!"];
 var error = false;
 
 function switchIcon () {
@@ -23,7 +22,6 @@ function displayError (errorCode) {
    console.log(errorCode);
    switch(errorCode) {
        case 0:
-            console.log(input.style);
             input.style.backgroundColor = "#de6868";
        case 1:
            if (!error) switchIcon ();
@@ -66,6 +64,9 @@ function displayStatus (statusCode) {
             break;
         case 3:
             document.getElementById("statusLabel").innerHTML = statusResponse[3];
+            break;
+        case 4:
+            document.getElementById("statusLabel").innerHTML = statusResponse[4];
             break;
     }
 }

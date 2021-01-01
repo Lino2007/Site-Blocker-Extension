@@ -10,6 +10,12 @@
    "permissions": [ "storage", 
     "tabs" ],
 
+    "icons": {
+      "16": "icons/default_icon.png",
+      "48": "icons/default_icon.png",
+      "128": "icons/default_icon.png"
+    },
+
     "background": {
       "scripts": ["js/background.js"]
     },
