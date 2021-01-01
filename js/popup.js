@@ -33,6 +33,7 @@ function uploadBlacklist () {
    document.getElementById("file-import").click();
 }
 
+// move to url_handler
 function verifySiteArray(arr) {
     let temp = [];
     arr.forEach(url => {
@@ -54,7 +55,6 @@ function handleFile () {
            try {
             jsArr =  JSON.parse(this.result);
             verifySiteArray(jsArr);
-            console.log(blacklist.length);
             loadLocalStorage();
            }
            catch (e) {
@@ -72,7 +72,9 @@ function handleFile () {
    }
 }
 
-//todo: reimplement this function (r: inefficient and cf-ed)
+/***
+ * Move all tab methods to tab.js
+ */
 function iterateAndCloseTabs(currentTab) {
    browser.tabs.query({}, function(tabs) { 
      if (currentTab!= null) tabs.splice(tabs.indexOf(currentTab), 1);
@@ -93,7 +95,16 @@ function iterateAndCloseTabs(currentTab) {
      });
 }
 
+function closeTabs (url) {
+    browser.tabs.query({}, function(tabs) { 
+        tabs.forEach(tab => {
+            if (trURL(tab.url) === url) browser.tabs.remove(tab.id);
+        });
+    });
 
+}
+
+// refactor -> redundant
 function addUrl () {
     let url = document.getElementById("bInput").value;
     if (url.includes("chrome://")) {
@@ -106,7 +117,8 @@ function addUrl () {
             displayStatus(0);
             blacklist.push(url);
             browser.storage.local.set({ blacklist: blacklist });
-            iterateAndCloseTabs(null);
+            // iterateAndCloseTabs(null);
+            closeTabs(url);
             reloadTable();
         }
         else {
@@ -118,6 +130,7 @@ function addUrl () {
     }
 }
 
+// refactor -> redundant
 function add() {
   browser.tabs.query({ currentWindow: true, active: true }, function (tabs) {
         console.log("Blacklist size - add(): "+ blacklist.length);
@@ -126,24 +139,21 @@ function add() {
         }
 
         if (blacklist.indexOf(tabs[0].url)== -1) {
-            console.log(tabs[0]);
-            blacklist.push(trURL(tabs[0].url));
+            var url = trURL(tabs[0].url);
+            blacklist.push(url);
             displayStatus(0);
             browser.storage.local.set({ blacklist: blacklist }, function() {
-            iterateAndCloseTabs(tabs[0]);
-            browser.tabs.remove(tabs[0].id);
+            closeTabs(url);
             loadTable();
             });
         }
       }); 
 }
-function reloadTable () {
-    $("#blTable").empty();
-    loadTable();
-}
+
+
+
 
 function handleDelete () {
-    //console.log(this.id);
     blacklist.splice(this.id, 1);
     browser.storage.local.set({
         blacklist: blacklist
@@ -151,6 +161,11 @@ function handleDelete () {
         reloadTable ();
         displayStatus(1);
     });
+}
+
+function reloadTable () {
+    $("#blTable").empty();
+    loadTable();
 }
 
 function loadTable () {
@@ -166,11 +181,8 @@ function loadTable () {
 }
 
 function loadLocalStorage () {
-    browser.storage.local.set({ blacklist: blacklist }, function() {
-       
-        reloadTable();
-        });
-    }
+    browser.storage.local.set({ blacklist: blacklist }, reloadTable);
+}
 
 
 window.onload = function() {

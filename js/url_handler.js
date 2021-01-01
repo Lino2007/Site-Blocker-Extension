@@ -2,8 +2,11 @@ function trURL (input) {
     let pos = input.indexOf("//");
     if (pos== -1) return null;
     pos = input.indexOf ("/", pos+2);
-    if (pos == -1) pos = input.length;
-    return input.slice(0, pos+1)
+    if (pos == -1) {
+        input += "/";
+        pos = input.length;
+    }
+    return input.slice(0, pos+1);
  }
 
  function validateUrl(value)
